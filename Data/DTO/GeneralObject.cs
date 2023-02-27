@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.DTO
 {
-    public class CommonObjectDTO 
+    public class GeneralObject 
     {
         public BasicInformationDTO BasicInformation { get; set; }
         public List<GoodsDetailsDTO> GoodsDetails { get; set; }

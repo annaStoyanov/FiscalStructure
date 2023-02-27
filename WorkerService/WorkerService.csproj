@@ -20,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Plugins\" />
+    <None Update="Plugins\Nigeria\NigeriaFiscalisation.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Plugins\Uganda\" />
   </ItemGroup>
 </Project>

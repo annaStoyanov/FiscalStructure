@@ -1,4 +1,6 @@
-﻿using MessageProcessor;
+﻿using Common;
+using Contracts;
+using MessageProcessor;
 using Microsoft.Extensions.DependencyInjection;
 using Orchestrator;
 
@@ -11,6 +13,8 @@ namespace CompositionRoot
             //add more service if needed
             services.AddSingleton<IQueueManager, QueueManager>();
             services.AddScoped<IMessageProcessorFactory, MessageProcessorFactory>();
+            services.AddScoped<IAdaptor, CommonAdaptor>();
+            services.AddScoped<CommonBusinessLogic>();
 
             return services;
         }

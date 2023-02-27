@@ -1,4 +1,5 @@
 using CompositionRoot;
+using Contracts;
 using ServiceRegister;
 
 namespace WorkerService

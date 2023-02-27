@@ -1,10 +1,10 @@
 ﻿using Data.DTO;
-using MAHContracts;
+using Contracts;
 
 namespace Orchestrator
 {
     public interface IMessageProcessor
     {
-        public void Process(InputObject message);
+        public Task ProcessAsync(InputObject message);
     }
 }

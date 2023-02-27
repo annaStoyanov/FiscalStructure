@@ -31,7 +31,7 @@ namespace WorkerService
                         {
                             var msg = await queueManager.Dequeue();
                             var msgProcessor = msgProcessorFactory.CreateInstance(msg.CountryCode.ToUpperInvariant());
-                            msgProcessor.Process(msg);
+                            await msgProcessor.ProcessAsync(msg);
                         }
                         catch (System.InvalidOperationException ex)
                         {

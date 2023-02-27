@@ -8,9 +8,9 @@ namespace Orchestrator
         public QueueManager()
         {
             azureQueue = new Queue<InputObject>();
+            azureQueue.Enqueue(new InputObject() { Id = 1, CountryCode = "NGA" });
             azureQueue.Enqueue(new InputObject() { Id = 1, CountryCode = "UGD" });
             azureQueue.Enqueue(new InputObject() { Id = 1, CountryCode = "UGD" });
-            azureQueue.Enqueue(new InputObject() { Id = 1, CountryCode = "NGR" });
             azureQueue.Enqueue(new InputObject() { Id = 1, CountryCode = "ZBW" });
         }
 

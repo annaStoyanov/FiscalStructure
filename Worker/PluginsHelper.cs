@@ -1,4 +1,4 @@
-﻿using MAHContracts;
+﻿using Contracts;
 using System.Reflection;
 
 namespace MessageProcessor
@@ -7,31 +7,44 @@ namespace MessageProcessor
     {
         public static List<Assembly> LoadPluginAssemblies()
         {
-            DirectoryInfo dInfo = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Plugins"));
-            FileInfo[] files = dInfo.GetFiles("*.dll");
+            DirectoryInfo pluginsDirectoryInfo = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Plugins"));
+            List<FileInfo> externalProjectDlls = new List<FileInfo>();
 
-            var assemblies = new List<Assembly>();
-
-            foreach (var file in files)
+            foreach (var dicrectoryInfo in pluginsDirectoryInfo.GetDirectories())
             {
-                assemblies.Add(Assembly.LoadFile(file.FullName));
+                FileInfo[] files = dicrectoryInfo.GetFiles("*.dll");
+                externalProjectDlls.AddRange(files);
+            }
+            
+            var assemblies = new List<Assembly>();
+            foreach (var fileInfo in externalProjectDlls)
+            {
+                assemblies.Add(Assembly.LoadFile(fileInfo.FullName));
             }
 
             return assemblies;
         }
 
-        public static IAdaptor? getAdaptor(Assembly assembly)
+        public static IAdaptor? GetAdaptor(Assembly assembly)
         {
             var availableTypes = assembly.GetTypes();
-            var adaptor = availableTypes.SingleOrDefault((x) => x.GetInterface("IAdaptor") != null);          
-            return adaptor != null ? Activator.CreateInstance(adaptor) as IAdaptor:  null;
+            var adaptor = availableTypes
+                .SingleOrDefault((x) => x.GetInterface(nameof(IAdaptor)) != null);         
+            
+            return adaptor != null 
+                ? Activator.CreateInstance(adaptor) as IAdaptor
+                : null;
         }
 
-        public static ISpecificLogic? getLogic(Assembly assembly)
+        public static ICountrySpecificLogic? GetLogic(Assembly assembly)
         {
             var availableTypes = assembly.GetTypes();
-            var logic = availableTypes.SingleOrDefault((x) => x.GetInterface("ISpecificLogic") != null);
-            return logic != null ? Activator.CreateInstance(logic) as ISpecificLogic: null;
+            var logic = availableTypes
+                .SingleOrDefault((x) => x.GetInterface(nameof(ICountrySpecificLogic)) != null);
+
+            return logic != null 
+                ? Activator.CreateInstance(logic) as ICountrySpecificLogic
+                : null;
         }
     }
 }

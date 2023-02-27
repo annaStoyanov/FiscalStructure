@@ -1,10 +1,9 @@
-﻿using Data.DTO;
-using MAHCommonBusinessLogic;
-using MAHContracts;
+﻿using Common;
+using Data.DTO;
 
 namespace UgandaFiscalisation
 {
-    public class UgandaSpecificLogic : CommonBusinessLogic, ISpecificLogic
+    public class UgandaSpecificLogic : CommonBusinessLogic, IBaseLogic
     {
         public string CountryCode => "UGD";
         public void Execute(CommonObjectDTO commonObject)

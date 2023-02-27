@@ -1,27 +1,35 @@
-﻿using Data.DTO;
-using MAHContracts;
+﻿using Common;
+using Contracts;
+using Data.DTO;
 
 namespace Orchestrator
 {
     public class MessageProcessor : IMessageProcessor
     {
         private readonly IAdaptor _adaptor;
-        private readonly ISpecificLogic _businessLogic;
+        private readonly ICountrySpecificLogic _countrySpecificBusinessLogic;
+        private readonly CommonBusinessLogic _commonBusinessLogic;
 
         public MessageProcessor(IAdaptor adaptor,
-            ISpecificLogic businessLogic)
+            ICountrySpecificLogic countrySpecificLogic,
+            CommonBusinessLogic businessLogic)
         {
             this._adaptor = adaptor;
-            this._businessLogic = businessLogic;
+            this._countrySpecificBusinessLogic = countrySpecificLogic;
+            this._commonBusinessLogic = businessLogic;
         }
 
-        public void Process(InputObject message)
+        public async Task ProcessAsync(InputObject message)
         {
-            var commonObject = new CommonObjectDTO();
-            this._businessLogic.Execute(commonObject);
-            var mappedObjectAsString = "<xml></xml>";//todo 
-            this._adaptor.FiscaliseDocument(mappedObjectAsString);
-        }
+            var generalObject = new GeneralObject();
+            
+            await this._commonBusinessLogic.ExecuteAsync(generalObject);
+            await this._countrySpecificBusinessLogic.UpdateCountrySpecificPropertiesAsync(generalObject);
 
+            string template = await this._commonBusinessLogic.FetchTemplateAsync();
+            var raResponse = await this._adaptor.FiscaliseDocumentAsync(generalObject, template);
+
+            //TODO: Save RaResponse to db
+        }
     }
 }

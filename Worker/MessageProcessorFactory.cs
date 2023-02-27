@@ -1,6 +1,9 @@
-﻿using MAHContracts;
+﻿using Common;
+using Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Orchestrator
 {
@@ -16,14 +19,30 @@ namespace Orchestrator
         {
             // instantiate service that needs runtime parameter
             //todo throw error when service don't exists
-            var adaptorService = services.GetServices<IAdaptor>()
-                .Single(x=>x.CountryCode == countryCode);
-            var businessLogic = services.GetServices<ISpecificLogic>()
-                .Single(x=>x.CountryCode == countryCode);
+            var configuration = services.GetService<IConfiguration>();
+            var businessLogic = services.GetServices<ICountrySpecificLogic>()
+              .SingleOrDefault(x => x.CountryCode == countryCode);
+            
+            var commonBusinessLogicService = services.GetService<CommonBusinessLogic>();
 
-            if (adaptorService == null || businessLogic == null)
+            if ( commonBusinessLogicService == null || businessLogic == null)
             {
                 throw new ArgumentNullException("Country base logic is not specified yet.");
+            }
+
+            commonBusinessLogicService.CountryCode = countryCode;
+            commonBusinessLogicService.Endpoint = configuration!
+                .GetSection("RegionEndpoints")
+                .GetSection(countryCode)
+                .Value;
+
+            var adaptorService = services.GetServices<IAdaptor>()!
+                .SingleOrDefault(x => x.CountryCode == countryCode 
+                    || x.CountryCode == string.Empty);
+
+            if (string.IsNullOrEmpty(adaptorService!.CountryCode))
+            {
+                adaptorService.CountryCode = countryCode;
             }
 
             // Note that in this example, WorkerService can also have other dependencies
@@ -32,7 +51,7 @@ namespace Orchestrator
             // the specified IServiceProvider
 
             return ActivatorUtilities.CreateInstance<MessageProcessor>(services,
-                new object[] { adaptorService, businessLogic });
+                new object[] { adaptorService, commonBusinessLogicService, businessLogic });
         }
     }
 }

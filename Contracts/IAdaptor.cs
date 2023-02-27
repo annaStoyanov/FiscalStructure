@@ -1,9 +1,11 @@
-﻿namespace MAHContracts
+﻿using Data.DTO;
+
+namespace Contracts
 {
     public interface IAdaptor
     {
-        public string CountryCode { get; }
+        public string CountryCode { get; set; }
 
-        public void FiscaliseDocument(string message);
+        public Task<RevenueAuthorityResponse> FiscaliseDocumentAsync(GeneralObject generalObject, string template);
     }
 }
