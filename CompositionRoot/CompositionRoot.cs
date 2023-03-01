@@ -1,6 +1,5 @@
 ﻿using Common;
 using Contracts;
-using MessageProcessor;
 using Microsoft.Extensions.DependencyInjection;
 using Orchestrator;
 

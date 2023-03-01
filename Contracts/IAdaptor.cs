@@ -6,6 +6,6 @@ namespace Contracts
     {
         public string CountryCode { get; set; }
 
-        public Task<RevenueAuthorityResponse> FiscaliseDocumentAsync(GeneralObject generalObject, string template);
+        public Task<RevenueAuthorityResponse> FiscalizeDocumentAsync(string requestBody);
     }
 }

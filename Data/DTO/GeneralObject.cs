@@ -13,10 +13,4 @@ namespace Data.DTO
         public List<TaxDetailsDTO> TaxDetails { get; set; }
         public CommonObjectExtraDetailsDTO ExtraDetails { get; set; }
     }
-
-  
-
-  
-
-   
 }

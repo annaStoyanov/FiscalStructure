@@ -14,21 +14,13 @@ namespace ServiceRegister
                 var businessLogic = PluginsHelper.GetLogic(assembly);
                 if (businessLogic != null)
                 {
-                    services.AddScoped<ICountrySpecificLogic>((sp) =>
-                    {
-                        //is active atribute
-                        return businessLogic;
-                    });
+                    services.AddScoped<ICountrySpecificLogic>((sp) => businessLogic);
                 }
 
                 var adaptor = PluginsHelper.GetAdaptor(assembly);
                 if (adaptor != null)
                 {
-                    services.AddScoped<IAdaptor>((sp) =>
-                    {
-                        //is active atribute
-                        return adaptor;
-                    });
+                    services.AddScoped<IAdaptor>((sp) => adaptor);
                 }
             }
 
