@@ -23,11 +23,10 @@ namespace Orchestrator
 		{
 			var generalObject = new GeneralObject();
 
+			//TODO: validation of the common object 
             await this._commonBusinessLogic.PopulateFieldsAsync(generalObject);
             await this._businessLogic.PopulateFieldsAsync(generalObject);
-			//TODO: validation of the common object 
             
-
             string template = await this._commonBusinessLogic.FetchTemplateAsync();
 
 			/* template
@@ -37,17 +36,16 @@ namespace Orchestrator
 			* }
 			*/
 
+			// TODO: Move this into plugins
 			string requestBody = await this.PopulateTemplatePlaceholders(generalObject, template); 
-			// move this into plugins
 			
 			/* requestBody
             * {
-            *      "name": "Valio",
-            *      "file": "alcohol.jpg"
+            *      "name": "SomeNameHere",
+            *      "file": "somePictureHere.jpg"
             * }
             */
 
-			// var raResponse = await this._adaptor.FiscalizeDocumentAsync(requestBody);
 			var raResponse = await this._adaptor.FiscalizeDocumentAsync(requestBody);
 
 			//TODO: Save RaResponse to db
