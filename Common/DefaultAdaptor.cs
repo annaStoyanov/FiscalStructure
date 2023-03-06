@@ -3,7 +3,7 @@ using Data.DTO;
 
 namespace Common
 {
-	public class CommonAdaptor : IAdaptor
+	public class DefaultAdaptor : IAdaptor
 	{
 		public string CountryCode { get; set; } = string.Empty;
 

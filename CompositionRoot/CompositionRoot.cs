@@ -12,7 +12,8 @@ namespace CompositionRoot
             //add more service if needed
             services.AddSingleton<IQueueManager, QueueManager>();
             services.AddScoped<IMessageProcessorFactory, MessageProcessorFactory>();
-            services.AddScoped<IAdaptor, CommonAdaptor>();
+            services.AddScoped<IAdaptor, DefaultAdaptor>();
+            services.AddScoped<IBusinessLogic, DefaultBusinessLogic>();
             services.AddScoped<CommonBusinessLogic>();
 
             return services;

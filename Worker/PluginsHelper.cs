@@ -36,14 +36,14 @@ namespace MessageProcessor
                 : null;
         }
 
-        public static ICountrySpecificLogic? GetLogic(Assembly assembly)
+        public static IBusinessLogic? GetLogic(Assembly assembly)
         {
             var availableTypes = assembly.GetTypes();
             var logic = availableTypes
-                .SingleOrDefault((x) => x.GetInterface(nameof(ICountrySpecificLogic)) != null);
+                .SingleOrDefault((x) => x.GetInterface(nameof(IBusinessLogic)) != null);
 
             return logic != null 
-                ? Activator.CreateInstance(logic) as ICountrySpecificLogic
+                ? Activator.CreateInstance(logic) as IBusinessLogic
                 : null;
         }
     }

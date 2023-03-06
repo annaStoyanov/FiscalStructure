@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface ICountrySpecificLogic
+    public interface IBusinessLogic
     {
         public string CountryCode { get; set; }
 
-        public Task UpdateCountrySpecificPropertiesAsync(GeneralObject generalObejct);
+        public Task PopulateFieldsAsync(GeneralObject generalObejct);
     }
 }

@@ -7,26 +7,28 @@ namespace Orchestrator
 	public class MessageProcessor : IMessageProcessor
 	{
 		private readonly IAdaptor _adaptor;
-		private readonly ICountrySpecificLogic _countrySpecificBusinessLogic;
+		private readonly IBusinessLogic _businessLogic;
 		private readonly CommonBusinessLogic _commonBusinessLogic;
 
 		public MessageProcessor(IAdaptor adaptor,
-			ICountrySpecificLogic countrySpecificLogic,
-			CommonBusinessLogic businessLogic)
+			IBusinessLogic businessLogic,
+			CommonBusinessLogic commonBusinessLogic)
 		{
 			this._adaptor = adaptor;
-			this._countrySpecificBusinessLogic = countrySpecificLogic;
-			this._commonBusinessLogic = businessLogic;
+			this._businessLogic = businessLogic;
+			this._commonBusinessLogic = commonBusinessLogic;
 		}
 
 		public async Task ProcessAsync(InputObject message)
 		{
 			var generalObject = new GeneralObject();
 
-			await this._commonBusinessLogic.ExecuteAsync(generalObject);
-			await this._countrySpecificBusinessLogic.UpdateCountrySpecificPropertiesAsync(generalObject);
+            await this._commonBusinessLogic.PopulateFieldsAsync(generalObject);
+            await this._businessLogic.PopulateFieldsAsync(generalObject);
+			//TODO: validation of the common object 
+            
 
-			string template = await this._commonBusinessLogic.FetchTemplateAsync();
+            string template = await this._commonBusinessLogic.FetchTemplateAsync();
 
 			/* template
 			* {
@@ -35,7 +37,8 @@ namespace Orchestrator
 			* }
 			*/
 
-			string requestBody = await this.PopulateTemplatePlaceholders(generalObject, template);
+			string requestBody = await this.PopulateTemplatePlaceholders(generalObject, template); 
+			// move this into plugins
 			
 			/* requestBody
             * {
@@ -45,7 +48,7 @@ namespace Orchestrator
             */
 
 			// var raResponse = await this._adaptor.FiscalizeDocumentAsync(requestBody);
-			var raResponse = await this._adaptor.FiscalizeDocumentAsync("asd");
+			var raResponse = await this._adaptor.FiscalizeDocumentAsync(requestBody);
 
 			//TODO: Save RaResponse to db
 		}

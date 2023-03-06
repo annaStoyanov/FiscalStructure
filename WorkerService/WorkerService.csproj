@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Plugins\Uganda\**" />
+    <Content Remove="Plugins\Uganda\**" />
+    <EmbeddedResource Remove="Plugins\Uganda\**" />
+    <None Remove="Plugins\Uganda\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
 
@@ -21,9 +28,5 @@
     <None Update="Plugins\Nigeria\NigeriaFiscalisation.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Plugins\Uganda\" />
   </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ namespace Common
             throw new NotImplementedException();
         }
 
-        public async Task ExecuteAsync(GeneralObject commonObject)
+        public async Task PopulateFieldsAsync(GeneralObject commonObject)
         {
             throw new NotImplementedException();
         }

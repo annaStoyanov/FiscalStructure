@@ -21,11 +21,15 @@ namespace Orchestrator
 			// instantiate service that needs runtime parameter
 			//todo throw error when service don't exists
 			var configuration = services.GetService<IConfiguration>();
-			var businessLogic = services.GetServices<ICountrySpecificLogic>()
-				                    .SingleOrDefault(x => x.CountryCode == countryCode)
-			                    ?? throw new ArgumentNullException("Country base logic is not specified yet.");
+			var businessLogic = services.GetServices<IBusinessLogic>()
+									.SingleOrDefault(x => x.CountryCode == countryCode || x.CountryCode == string.Empty);
+            
+			if (string.IsNullOrEmpty(businessLogic!.CountryCode))
+            {
+                businessLogic.CountryCode = countryCode;
+            }
 
-			var commonBusinessLogicService = services.GetService<CommonBusinessLogic>();
+            var commonBusinessLogicService = services.GetService<CommonBusinessLogic>();
 			commonBusinessLogicService!.CountryCode = countryCode;
 			commonBusinessLogicService!.Endpoint = configuration!
 				.GetSection("RegionEndpoints")

@@ -14,7 +14,7 @@ namespace ServiceRegister
                 var businessLogic = PluginsHelper.GetLogic(assembly);
                 if (businessLogic != null)
                 {
-                    services.AddScoped<ICountrySpecificLogic>((sp) => businessLogic);
+                    services.AddScoped<IBusinessLogic>((sp) => businessLogic);
                 }
 
                 var adaptor = PluginsHelper.GetAdaptor(assembly);
