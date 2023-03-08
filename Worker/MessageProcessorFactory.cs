@@ -9,6 +9,7 @@ namespace Orchestrator
 {
 	public class MessageProcessorFactory : IMessageProcessorFactory
 	{
+		private const string Endpoint = "RegionEndpoints";
 		private readonly IServiceProvider services;
 
 		public MessageProcessorFactory(IServiceProvider services)
@@ -18,11 +19,9 @@ namespace Orchestrator
 
 		public IMessageProcessor CreateInstance(string countryCode)
 		{
-			// instantiate service that needs runtime parameter
-			//todo throw error when service don't exists
 			var configuration = services.GetService<IConfiguration>();
 			var businessLogic = services.GetServices<IBusinessLogic>()
-									.SingleOrDefault(x => x.CountryCode == countryCode || x.CountryCode == string.Empty);
+				.SingleOrDefault(x => x.CountryCode == countryCode || x.CountryCode == string.Empty);
             
 			if (string.IsNullOrEmpty(businessLogic!.CountryCode))
             {
@@ -32,7 +31,7 @@ namespace Orchestrator
             var commonBusinessLogicService = services.GetService<CommonBusinessLogic>();
 			commonBusinessLogicService!.CountryCode = countryCode;
 			commonBusinessLogicService!.Endpoint = configuration!
-				.GetSection("RegionEndpoints")
+				.GetSection(Endpoint)
 				.GetSection(countryCode)
 				.Value;
 

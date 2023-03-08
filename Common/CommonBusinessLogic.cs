@@ -3,13 +3,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace Common
 {
-
-    //common for all possible countries
     public class CommonBusinessLogic
     {
-        public string Endpoint { get; set; }
+        public string Endpoint { get; set; } = string.Empty;
 
-        public string CountryCode { get; set; }
+        public string CountryCode { get; set; } = string.Empty;
 
         public async virtual Task FetchGoodDetailsAsync(GeneralObject commonObject)
         {
